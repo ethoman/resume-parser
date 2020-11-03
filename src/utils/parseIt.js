@@ -45,7 +45,9 @@ var parser = {
 
       objParseBoy.parseUrl(preppedData, function(Resume) {
         logger.trace('I got Resume for ' + url + ', now sending...');
-        return cbAfterParse(Resume.parts);
+        objParseBoy.beautify(Resume, function(BResume) {
+          return cbAfterParse(BResume.parts);
+        })
       });
     };
 

@@ -75,12 +75,16 @@ function parseExperience(experience) {
       descriptionStr += strList[j] + '\n'
     }
 
-    const startDate = parseDate(yearStr.split(/-|~/)[0])
-    const endDate = parseDate(yearStr.split(/-|~/)[1])
+    let yearStrs = []
+    if (yearStr.split('to').length === 2) yearStrs = yearStr.split('to')
+    else if (yearStr.split('-').length === 2) yearStrs = yearStr.split('-')
+    else if (yearStr.split('/').length === 2) yearStrs = yearStr.split('-')
+    const startDate = parseDate(yearStrs[0])
+    const endDate = parseDate(yearStrs[1])
     list.push({
       year: yearStr,
-      startYear: startDate,
-      endYear: endDate,
+      startDate,
+      endDate,
       title: titleStr,
       description: descriptionStr
     })
@@ -116,6 +120,17 @@ function getYearOfTheRow(row) {
   return year
 }
 
+function getNumberOfTheRow(row) {
+  let number = ''
+  for (let i=0; i<row.length; i++) {
+    const ch = row[i];
+    if(ch >= '0' && ch <= '9') {
+      number += ch
+    }
+  }
+  return number
+}
+
 function getMonthFromStr(str) {
   const keywords = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
@@ -130,6 +145,15 @@ function getMonthFromStr(str) {
       }
     } 
   })
+
+  if (!month) {
+    if(checkIfContainYearOnRow(str) === 2 || checkIfContainYearOnRow(str) === 1) {
+      month = {
+        index: parseInt(getNumberOfTheRow(str), 10),
+        name: getNumberOfTheRow(str),
+      }
+    }
+  }
 
   return month
 }
