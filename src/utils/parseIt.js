@@ -16,18 +16,21 @@ var parser = {
         logger.trace(
           'I got Resume for ' + preppedFile.name + ', now saving...'
         );
-
-        objParseBoy.storeResume(preppedFile, Resume, savePath, function(err) {
-          if (err) {
-            logger.error('Resume ' + preppedFile.name + ' errored', err);
-            return cbAfterParse(
-              null,
-              'Resume ' + preppedFile.name + ' errored'
-            );
-          }
-          logger.trace('Resume ' + preppedFile.name + ' saved');
-          return cbAfterParse(preppedFile.name);
-        });
+        // logger.trace('Resume: ', Resume)
+        objParseBoy.beautify(Resume, function(BResume) {
+          console.log('BResume', BResume)
+          objParseBoy.storeResume(preppedFile, BResume, savePath, function(err) {
+            if (err) {
+              logger.error('Resume ' + preppedFile.name + ' errored', err);
+              return cbAfterParse(
+                null,
+                'Resume ' + preppedFile.name + ' errored'
+              );
+            }
+            logger.trace('Resume ' + preppedFile.name + ' saved');
+            return cbAfterParse(preppedFile.name);
+          });
+        })
       });
     };
     processing.runFile(file, onFileReady);

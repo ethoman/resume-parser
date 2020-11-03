@@ -2,6 +2,7 @@
 const _ = require('underscore'),
   processing = require('./libs/processing'),
   parser = require('./libs/parser'),
+  beautify = require('./libs/beautify'),
   logger = require('tracer').colorConsole();
 
 /**
@@ -50,6 +51,10 @@ ParseBoy.prototype.storeResume = function(
   }
   PreparedFile.saveResume(path, cbOnSaved);
 };
+
+ParseBoy.prototype.beautify = function(Resume, func) {
+  beautify.beautify(Resume, func)
+}
 
 /**
  *
