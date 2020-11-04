@@ -13,6 +13,8 @@ module.exports = {
 function beautify(Resume, func) {
   const experience = Resume.parts.experience
   Resume.parts.experience = parseExperience(experience)
+  // console.log(parseExperience(Resume.parts.education))
+  Resume.parts.education = parseExperience(Resume.parts.education)
   // logger.trace('length', strList.length)
   // console.log(Resume)
   func(Resume)
@@ -42,9 +44,25 @@ function checkIfContainYearOnRow(row) {
   return max
 }
 
+removeUnncesessaryRows = (list) => {
+  const strList = []
+  list.map(each => {
+    let count = 0
+    for (let i=0; i<each.length; i++) {
+      if((each[i] >= 'a' && each[i] <= 'z') || (each[i] >= 'A' && each[i] <= 'Z') || (each[i] >= '0' && each[i] <= '9')) {
+        count++;
+      }
+    }
+    if(count !== 0) {
+      strList.push(each)
+    }
+  })
+  return strList
+}
+
 function parseExperience(experience) {
   const list = []
-  const strList = experience.split('\n')
+  const strList = removeUnncesessaryRows(experience.split('\n'))
   
   let yearIndex = -1, yearList = []
   for (let i=0; i < strList.length; i++) {
@@ -56,7 +74,8 @@ function parseExperience(experience) {
       yearList.push(i)
     }
   }
-
+  console.log('yearIndex', yearIndex)
+  console.log('yearIndex', yearList)
   for (let i=0; i < yearList.length; i++) {
     const yIndex = yearList[i]
     let yearStr = '', titleStr, descriptionStr = '', startIndex = 0, endIndex = 0
