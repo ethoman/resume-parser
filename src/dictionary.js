@@ -9,7 +9,7 @@ module.exports = {
     technology: ['technology', 'technologies'],
     experience: ['experience'],
     education: ['education'],
-    skills: ['skills', 'Skills & Expertise', 'technology', 'technologies'],
+    skills: ['skills', 'Skills & Expertise'],
     languages: ['languages'],
     courses: ['courses'],
     projects: ['projects'],
@@ -27,12 +27,13 @@ module.exports = {
     additional: ['additional'],
     certification: ['certification', 'certifications'],
     interests: ['interests'],
+    hobbies: ['hobby', 'hobbies']
   },
   profiles: [
     [
       'github.com',
       function(url, Resume, profilesWatcher) {
-        download(url, function(data, err) {
+        download(url.split('?')[0], function(data, err) {
           if (data) {
             var $ = cheerio.load(data),
               fullName = $('.vcard-fullname').text(),
