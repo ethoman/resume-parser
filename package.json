@@ -5,17 +5,17 @@
   "main": "src/index.js",
   "author": "Parminder Klair",
   "contributors": [
-    "Petar Petrov (https://github.com/Mihaylov93)"
+    "Shing Ho Tan (https://github.com/Shing-Ho)"
   ],
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/perminder-klair/resume-parser.git"
+    "url": "git+https://github.com/Shing-Ho/resume-parser.git"
   },
   "bugs": {
-    "url": "https://github.com/perminder-klair/resume-parser/issues"
+    "url": "https://github.com/Shing-Ho/resume-parser/issues"
   },
-  "homepage": "https://github.com/perminder-klair/resume-parser",
+  "homepage": "https://github.com/Shing-Ho/resume-parser",
   "keywords": [
     "resume",
     "cv",
@@ -30,7 +30,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "request": "^2.83.0",
-    "textract": "^2.2.0",
+    "textract": "git+https://github.com/Shing-Ho/textract",
     "tracer": "^0.8.11",
     "underscore": "^1.8.3"
   },
