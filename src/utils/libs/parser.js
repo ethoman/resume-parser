@@ -82,6 +82,13 @@ function parse(PreparedFile, cbReturnResume) {
     parseDictionaryInline(Resume, row);
   }
 
+  // console.log('parseDictionay resume', Resume)
+  if(!Resume.parts.experience && !Resume.parts.education) {
+    for (var i = 0; i < rows.length; i++) {
+      parseDictionaryTitles(Resume, rows, i, true);
+    }
+  }
+
   if (_.isFunction(cbReturnResume)) {
     // wait until download and handle internet profile
     var i = 0;
@@ -169,7 +176,7 @@ function parseDictionaryRegular(data, Resume) {
  * @param rows
  * @param rowIdx
  */
-function parseDictionaryTitles(Resume, rows, rowIdx) {
+function parseDictionaryTitles(Resume, rows, rowIdx, flag) {
   var allTitles = _.flatten(_.toArray(dictionary.titles)).join('|'),
     searchExpression = '',
     row = rows[rowIdx],
@@ -180,7 +187,8 @@ function parseDictionaryTitles(Resume, rows, rowIdx) {
   _.forEach(dictionary.titles, function(expressions, key) {
     expressions = expressions || [];
     // means, that titled row is less than 5 words
-    if (countWords(row) <= 5) {
+    // remove checking words length below than 5 because some keywords mixed with the real sentence
+    if(!flag && countWords(row) <= 5 || flag) {
       _.forEach(expressions, function(expression) {
         ruleExpression = new RegExp(expression);
         isRuleFound = ruleExpression.test(row);

@@ -13,16 +13,21 @@ module.exports = {
 function beautify(Resume, func) {
   const experience = Resume.parts.experience
   if (Resume.parts.experience) {
+    // console.log('parseExperience(experience)', parseExperience(experience))
     Resume.parts.experience = parseExperience(experience)
   }
   if (Resume.parts.education) {
-    Resume.parts.education = parseExperience(Resume.parts.education)
+    // console.log('education', parseEducation(Resume.parts.education))
+    Resume.parts.education = parseEducation(Resume.parts.education)
   }
   if (Resume.parts.hobbies) {
     Resume.parts.hobbies = parseHobbies(Resume.parts.hobbies)
   }
   if (Resume.parts.skills) {
     Resume.parts.skills = parseSkills(Resume.parts.skills)
+  }
+  if (Resume.parts.name) {
+    Resume.parts.name = Resume.parts.name.split('\n')[0]
   }
   // logger.trace('length', strList.length)
   // console.log(Resume)
@@ -180,6 +185,22 @@ function parseDate(str) {
   }
 }
 
+function parseUniversity(str) {
+  if(!str) {
+    return ''
+  }
+  let temp = str.trim()
+  const year = getYearOfTheRow(temp)
+  temp = temp.replace(year, '')
+  const month = getMonthFromStr(temp)
+  if(month) {
+    temp = temp.replace(month.name, '')
+    temp = temp.replace(month.name.toLowerCase(), '')
+  }
+  temp = temp.trim()
+  return temp;
+}
+
 function parseExperience(experience) {
   const list = []
   const strList = removeUnncesessaryRows(experience.split('\n'))
@@ -229,6 +250,65 @@ function parseExperience(experience) {
 
   return list
 }
+
+function parseEducation(experience) {
+  const list = []
+  const strList = removeUnncesessaryRows(experience.split('\n'))
+  
+  let yearIndex = -1, yearList = []
+  for (let i=0; i < strList.length; i++) {
+    const str = strList[i]
+    if(checkIfContainYearOnRow(str) >= 4) {
+      if(yearIndex === -1) {
+        yearIndex = i
+      }
+      yearList.push(i)
+    }
+  }
+  for (let i=0; i < yearList.length; i++) {
+    const yIndex = yearList[i]
+    let yearStr = '', titleStr, descriptionStr = '', startIndex = 0, endIndex = 0
+    if (yearIndex === 0) {
+      yearStr = strList[yIndex]
+      titleStr = strList[yIndex + 1]
+      startIndex = yIndex + 2
+      endIndex = ((i === yearList.length - 1) ? strList.length - 1 : yearList[i + 1] - 1)
+    } else if(yearIndex === 1) {
+      yearStr = strList[yIndex]
+      titleStr = strList[yIndex - 1]
+      startIndex = yIndex + 1
+      endIndex = ((i === yearList.length - 1) ? strList.length - 1 : yearList[i + 1] - 2)
+    }
+    for(let j=startIndex; j<=endIndex; j++) {
+      descriptionStr += strList[j] + '\n'
+    }
+    if(titleStr && (titleStr.includes('Bachelor') || titleStr.includes('Master'))) {
+      descriptionStr = titleStr
+      titleStr = ''
+    }
+    let yearStrs = []
+    if (yearStr.split('to').length === 2) yearStrs = yearStr.split('to')
+    else if (yearStr.split('-').length === 2) yearStrs = yearStr.split('-')
+    else if (yearStr.split('/').length === 2) yearStrs = yearStr.split('-')
+    
+    if(!titleStr) {
+      titleStr = parseUniversity(yearStrs[0])
+    }
+
+    const startDate = parseDate(yearStrs[0])
+    const endDate = parseDate(yearStrs[1])
+    list.push({
+      year: yearStr,
+      startDate,
+      endDate,
+      title: titleStr,
+      description: descriptionStr
+    })
+  }
+
+  return list
+}
+
 
 function parseHobbies(hobbies) {
   const strList = removeUnncesessaryRows(hobbies.split('\n'), true)
