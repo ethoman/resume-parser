@@ -228,6 +228,11 @@ function parseExperience(experience) {
       titleStr = strList[yIndex - 1]
       startIndex = yIndex + 1
       endIndex = ((i === yearList.length - 1) ? strList.length - 1 : yearList[i + 1] - 2)
+    } else if (yearIndex === 2) {
+      yearStr = strList[yIndex]
+      titleStr = strList[yIndex - 2] + ' ' + strList[yIndex - 1] 
+      startIndex = yIndex + 1
+      endIndex = ((i === yearList.length - 1) ? strList.length - 1 : yearList[i + 1] - 3)
     }
     for(let j=startIndex; j<=endIndex; j++) {
       descriptionStr += strList[j] + '\n'
@@ -254,7 +259,7 @@ function parseExperience(experience) {
 function parseEducation(experience) {
   const list = []
   const strList = removeUnncesessaryRows(experience.split('\n'))
-  
+
   let yearIndex = -1, yearList = []
   for (let i=0; i < strList.length; i++) {
     const str = strList[i]
@@ -278,6 +283,11 @@ function parseEducation(experience) {
       titleStr = strList[yIndex - 1]
       startIndex = yIndex + 1
       endIndex = ((i === yearList.length - 1) ? strList.length - 1 : yearList[i + 1] - 2)
+    } else if (yearIndex === 2) {
+      yearStr = strList[yIndex]
+      titleStr = strList[yIndex - 2] + ' ' + strList[yIndex - 1] 
+      startIndex = yIndex + 1
+      endIndex = ((i === yearList.length - 1) ? strList.length - 1 : yearList[i + 1] - 3)
     }
     for(let j=startIndex; j<=endIndex; j++) {
       descriptionStr += strList[j] + '\n'

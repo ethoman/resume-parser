@@ -5,7 +5,7 @@ var _ = require('underscore');
 module.exports = {
   titles: {
     summary: ['summary'],
-    technology: ['technology', 'technologies'],
+    // technology: ['technology', 'technologies'],
     experience: ['experience'],
     education: ['education'],
     skills: ['skills', 'Skills & Expertise'],
@@ -26,7 +26,8 @@ module.exports = {
     additional: ['additional'],
     certification: ['certification', 'certifications'],
     interests: ['interests'],
-    hobbies: ['hobby', 'hobbies']
+    hobbies: ['hobby', 'hobbies'],
+    personal: ['personal', 'personal info']
   },
   profiles: [
     [

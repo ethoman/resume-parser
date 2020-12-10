@@ -170,6 +170,21 @@ function parseDictionaryRegular(data, Resume) {
   });
 }
 
+function checkSpacedSentence(row) {
+  let cnt = 0
+  const strList = row.split('\n')[0].split(' ')
+  for(let i=0; i<strList.length; i++) {
+    if(strList[i].length === 1) {
+      cnt++
+    }
+  }
+  if (cnt === strList.length) {
+    return strList.join('')
+  } else {
+    return row
+  }
+}
+
 /**
  *
  * @param Resume
